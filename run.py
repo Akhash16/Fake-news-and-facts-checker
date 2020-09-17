@@ -23,11 +23,11 @@ def sms_reply():
     
 
     #resp.message("Title is: {}".format(title))
-    if(msg == "hi"):
+    if(msg == "hi" or msg == 'Hi'):
         resp.message("FAKE NEWS DETECTOR AND FACTS CHECKER:\n1.Article checker \n 2.Facts checker")
-    if(msg == '1'):
+    elif(msg == '1'):
         resp.message("Enter the URL of the article")
-    if(msg == '2'):
+    elif(msg == '2'):
         resp.message("Enter the fact or a short sentence")
     #resp.message("You said: {}".format(msg))
     else:
@@ -52,8 +52,46 @@ def sms_reply():
 
 
         else:
-            pass
+        
+            from googleapiclient.discovery import build
 
+            API_KEY='AIzaSyBEbc15F1s35_bgvC8eupXt0MpGkV92PnA'
+            SERVICE=build("factchecktools","v1alpha1",developerKey=API_KEY)
+            userQuery=msg
+            request1=SERVICE.claims().search(query=userQuery)
+            response=request1.execute()
+        
+
+            if not bool(response):
+                source1 = []
+                source2 = []
+                newsapi = NewsApiClient(api_key='cc8998f479954041b5f845f0b4491050')
+                news_sources = newsapi.get_sources()
+
+                top_headlines = newsapi.get_top_headlines(q = msg, language = 'en',)
+                for article in top_headlines['articles']:
+                    source1.append(article['source']['name'])
+
+                all_articles = newsapi.get_everything(q = msg, language = 'en',)
+                for article in all_articles['articles']:
+                    source2.append(article['source']['name'])
+                
+
+                if(top_headlines['articles'] == []  and all_articles['articles'] == []):
+                    resp.message("The news is FAKE")
+                else:
+                    resp.message('The news is REAL','\n',source2[0])
+                
+
+            else:
+                result  = response['claims'][0]['claimReview'][0]['textualRating']
+                website = response['claims'][0]['claimReview'][0]['publisher']['name']
+                url = response['claims'][0]['claimReview'][0]['url']
+                resp.message(result)
+                resp.message(website)
+                resp.message(url)
+
+            
 
     return str(resp)
 
