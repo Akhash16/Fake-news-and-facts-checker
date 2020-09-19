@@ -2,10 +2,10 @@ from googleapiclient.discovery import build
 
 API_KEY='AIzaSyBEbc15F1s35_bgvC8eupXt0MpGkV92PnA'
 SERVICE=build("factchecktools","v1alpha1",developerKey=API_KEY)
-userQuery="trump is dead"
+userQuery="sunlight kills coronavirus"
 request1=SERVICE.claims().search(query=userQuery)
 response=request1.execute()
-if response == {}:
+if not bool(response):
     print("no info")
 else:
     claim = response['claims'][0]['claimReview'][0]['textualRating']

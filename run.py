@@ -4,6 +4,7 @@ from urllib.request import urlopen,Request
 from bs4 import BeautifulSoup as soup
 import validators
 from newsapi import NewsApiClient
+from googleapiclient.discovery import build
 
 app = Flask(__name__)
 
@@ -52,35 +53,30 @@ def sms_reply():
 
 
         else:
-        
-            from googleapiclient.discovery import build
-
             API_KEY='AIzaSyBEbc15F1s35_bgvC8eupXt0MpGkV92PnA'
             SERVICE=build("factchecktools","v1alpha1",developerKey=API_KEY)
             userQuery=msg
+            
             request1=SERVICE.claims().search(query=userQuery)
             response=request1.execute()
-        
+
 
             if not bool(response):
+                
                 source1 = []
-                source2 = []
                 newsapi = NewsApiClient(api_key='cc8998f479954041b5f845f0b4491050')
                 news_sources = newsapi.get_sources()
 
-                top_headlines = newsapi.get_top_headlines(q = msg, language = 'en',)
-                for article in top_headlines['articles']:
-                    source1.append(article['source']['name'])
-
                 all_articles = newsapi.get_everything(q = msg, language = 'en',)
                 for article in all_articles['articles']:
-                    source2.append(article['source']['name'])
+                    source1.append(article['source']['name'])
                 
 
-                if(top_headlines['articles'] == []  and all_articles['articles'] == []):
+                if(all_articles['articles'] == []):
                     resp.message("The news is FAKE")
                 else:
-                    resp.message('The news is REAL','\n',source2[0])
+                    resp.message('The news is REAL')
+                    resp.message(source1[0])
                 
 
             else:
@@ -89,7 +85,7 @@ def sms_reply():
                 url = response['claims'][0]['claimReview'][0]['url']
                 resp.message(result)
                 resp.message(website)
-                resp.message(url)
+                resp.message(url) 
 
             
 
