@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fake News Detector | Search</title>
-    <link href="https://fonts.googleapis.com/css2?family=Niconne&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Covered+By+Your+Grace&family=Josefin+Sans:wght@500&family=Sansita+Swashed:wght@300&display=swap" rel="stylesheet">
+    
     <style>
         body{
             background-color: rgb(9, 9, 41);
@@ -16,44 +17,48 @@
         }
 
         body > h1{
-            font-size: 5rem;
+            font-size: 6rem;
             color: red;
-            font-family: 'Niconne', cursive;
+            justify-content: center;
+            font-family: 'Josefin Sans', cursive;
         }
 
-        body > input{
-            width: 60%;
-            height: 3%;
+        body >form > input{
+            width: 150%;
+            height: 30%;
             padding: 1% 1.5%;
-            margin: 2%;
+            margin: 3%;
             font-size: 1.5rem;
             border-radius: 40px;
             background-color: rgb(167, 165, 165);
             color:black;
+            font-family: 'Josefin Sans', cursive;
         }
 
-        body>button{
+        body > form > button{
             cursor: pointer;
             border-radius: 20px;
-            width: 10%;
-            height:8%;
+            width: 40%;
+            height:45%;
             text-align: center;
-            font-size: 1.2rem;
-            padding: 15px;
+            font-size: 2rem;
+            padding: 20px;
+            font-family: 'Josefin Sans', cursive;
 
         }
 
-        body>button:hover{
+        body > form > button:hover{
             background-color: gray;
         }
     </style>
 </head>
 <body>
     <h1>Fake News Detector</h1>
-    <input type="text" placeholder="Search.....">
-    <button>
-        Search
-    </button>
+    <form class="form" method="post" action="/search_query">
+    
+        <input type="text" name = 'user_query' placeholder="Enter the URL of the article or a sentence">
+        <button type="submit" >Search</button>
+    </form>
 
 </body>
 </html>
