@@ -10,8 +10,8 @@ from nltk.tokenize import word_tokenize
 
 app = Flask(__name__,template_folder='templates')
 
-with open('model.pickle', 'rb') as mod:
-    model = pickle.load(mod)
+#with open('model.pickle', 'rb') as mod:
+    #model = pickle.load(mod)
 
 @app.route("/")
 def home():
@@ -49,11 +49,12 @@ def store():
                 description2.append(article['description'])
         
         if(top_headlines['articles'] == []  and all_articles['articles'] == []):
-            pred = model.predict([title])
-            ans = "The news is mostly " + pred[0]
+            #pred = model.predict([title])
+            #ans = "The news is mostly " + pred[0]
+            ans = 'The news is mostly FAKE'
             return ans
         else:
-            ans1 = 'The news is REAL\nSource : {0}\nDescription : {1}'.format(source2[0],description2[0])
+            ans1 = "The news is REAL\n Source : {0}\n Description : {1}".format(source2[0],description2[0])
             
             return ans1
 
@@ -96,7 +97,7 @@ def store():
                 resp.message(result)
                 resp.message(website)
                 resp.message(url)
-                ans2 = 'Result : {0}\nWebsite : {1}\nURL : {2}'.format(result,website,url)
+                ans2 = 'Result : {0}\n Website : {1}\n URL : {2}'.format(result,website,url)
 
                 return ans2
                 
