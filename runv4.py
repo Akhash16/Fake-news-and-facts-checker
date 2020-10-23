@@ -30,12 +30,16 @@ def sms_reply():
     # Create reply
 
     # resp.message("Title is: {}".format(title))
-    if (msg == " " or msg == '0'):
+    if (msg != ""  or msg == '0'):
         resp.message('''Hi Hello ! \n This is Jazzy - A News Detection Bot \n I am capable of doing some Tasks! \n Type a Number to navigate: \n 1.Article checking \n 2.Article Summarization \n 3.Facts checking \n 4.Url Expander \n Share me \n https://wa.me/+14155238886?text=join came-poor ''')
 
 
-    switch(msg)
-        case 1:
+    else:
+        cases(msg)
+
+
+    def cases(option):
+        if(option == '1'):
             resp.message("Enter the Url of the article")
             valid = validators.url(msg)
             if valid == True:
@@ -68,12 +72,12 @@ def sms_reply():
 
 
             else:
-                print("The Url does not exists !")
-            break
-        case 2:
+                resp.message("The Url does not exists !")
+
+        if(option == '2'):
             pass
-            break
-        case 3:
+
+        if(option == '3'):
             resp.message('''Type a word or short sentence (in English) related to the fact or news you want to check, and we’ll send you the related results.\n 👀 Example: If you’ve read a news about anything, type the news headlines or a short sentence like: does iphone 12 series are packed without chargers?''')
             list_of_stopwords = list(stopwords.words('english'))
             tokenized_text = word_tokenize(msg)
@@ -113,7 +117,7 @@ def sms_reply():
                         clean_msg1 += word + ' '
                 all_articles = newsapi.get_everything(q=clean_msg1, sort_by='relevancy', language='en', )
 
-                if (all_articles['articles'] not =[]):
+                if (all_articles['articles'] != []):
 
                     for article in all_articles['articles']:
                         source1.append(article['source']['name'])
@@ -167,29 +171,31 @@ def sms_reply():
                 tokenized_result = word_tokenize(container[i].text)
                 clean_result = ''
                 clean_searches = []
-                    for word in tokenized_user_text:
-                        word = word.lower()
-                        if not word in list_of_stopwords and word != '.' and word != "''" and word != "``" and word != ']' and word != '!' and word != '%' and word != '&' and word != '?' and word != '//' and word != ';' and word != '|' and word != ' ' and word != "'" and word != '"' and word != '[' and word != '@' and word != ',' and word != '#' and word != '..' and word != '-' and word != '(' and word != ')' and word != '...' and word != '/' and word != ':':
-                            clean_result = word + ' '
-                            clean_searches.append(clean_result)
+                for word in tokenized_user_text:
+                    word = word.lower()
+                    if not word in list_of_stopwords and word != '.' and word != "''" and word != "``" and word != ']' and word != '!' and word != '%' and word != '&' and word != '?' and word != '//' and word != ';' and word != '|' and word != ' ' and word != "'" and word != '"' and word != '[' and word != '@' and word != ',' and word != '#' and word != '..' and word != '-' and word != '(' and word != ')' and word != '...' and word != '/' and word != ':':
+                        clean_result = word + ' '
+                        clean_searches.append(clean_result)
 
             count1 = 0
             for i in range(len(clean_searches)):
                 for j in range(len(clean_user_text)):
                     if (clean_user_text[j] in clean_searches[i]):
-                        count1 = count1 + 1;
+                        count1 = count1 + 1
                     if (count1 >= word_count1 / 2):
                         resp.message(container[0].text)
-            break
+                        break
 
-        case 4:
+        if(option == '4'):
             pass
-            break
 
-        default:
+
+        else:
             resp.message("press 0 to main menu")
 
     return str(resp)
+
+
 
 
 if __name__ == "__main__":
